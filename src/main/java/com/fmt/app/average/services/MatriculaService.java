@@ -1,11 +1,12 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.repositories.MatriculaRepository;
-import lombok.RequiredArgsConstructor;
+import com.fmt.app.average.entities.MatriculaEntity;
+import com.fmt.app.average.interfaces.IGenericRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class MatriculaService {
-    private final MatriculaRepository repository;
+public class MatriculaService extends GenericService<MatriculaEntity> {
+    public MatriculaService(IGenericRepository<MatriculaEntity> repository){
+        super(repository);
+    }
 }

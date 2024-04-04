@@ -1,11 +1,12 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.repositories.DisciplinaRepository;
-import lombok.RequiredArgsConstructor;
+import com.fmt.app.average.entities.DisciplinaEntity;
+import com.fmt.app.average.interfaces.IGenericRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class DisciplinaService {
-    private final DisciplinaRepository repository;
+public class DisciplinaService extends GenericService<DisciplinaEntity> {
+    public DisciplinaService(IGenericRepository<DisciplinaEntity> repository){
+        super(repository);
+    }
 }

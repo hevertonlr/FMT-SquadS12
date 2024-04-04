@@ -1,9 +1,9 @@
 package com.fmt.app.average.repositories;
 
 import com.fmt.app.average.entities.ProfessorEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.fmt.app.average.interfaces.IGenericRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<ProfessorEntity,Long> {
+public interface ProfessorRepository extends IGenericRepository<ProfessorEntity> {
 }

@@ -1,15 +1,13 @@
 package com.fmt.app.average.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Data
+
 @Entity
 @Table(name = "disciplina")
-public class DisciplinaEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class DisciplinaEntity extends GenericEntity{
     @Column(length = 150,nullable = false)
     private String nome;
     @ManyToOne

@@ -2,6 +2,7 @@ package com.fmt.app.average.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -10,10 +11,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "disciplina_matricula")
-public class MatriculaEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class MatriculaEntity extends GenericEntity {
 
     @ColumnDefault(value = "NOW()")
     @Temporal(value = TemporalType.DATE)
