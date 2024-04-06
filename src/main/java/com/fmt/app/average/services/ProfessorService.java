@@ -1,11 +1,12 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.repositories.ProfessorRepository;
-import lombok.RequiredArgsConstructor;
+import com.fmt.app.average.entities.ProfessorEntity;
+import com.fmt.app.average.interfaces.IGenericRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class ProfessorService {
-    private final ProfessorRepository repository;
+public class ProfessorService extends GenericService<ProfessorEntity> {
+    public ProfessorService(IGenericRepository<ProfessorEntity> repository){
+        super(repository);
+    }
 }

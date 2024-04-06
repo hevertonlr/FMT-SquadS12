@@ -1,12 +1,13 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.repositories.AlunoRepository;
-import lombok.RequiredArgsConstructor;
+import com.fmt.app.average.entities.AlunoEntity;
+import com.fmt.app.average.interfaces.IGenericRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class AlunoService{
-    private final AlunoRepository repository;
+public class AlunoService extends GenericService<AlunoEntity> {
+    public AlunoService(IGenericRepository<AlunoEntity> repository){
+        super(repository);
+    }
 
 }
