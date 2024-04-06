@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("matricula")
 public class MatriculaController extends GenericController<MatriculaEntity> {
-    public MatriculaController(IGenericService<MatriculaEntity> service) {
+    public MatriculaController(MatriculaService service) {
         super(service);
     }
 }

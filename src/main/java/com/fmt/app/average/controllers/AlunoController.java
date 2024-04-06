@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("aluno")
 public class AlunoController extends GenericController<AlunoEntity> {
-    public AlunoController(IGenericService<AlunoEntity> service) {
+    public AlunoController(AlunoService service) {
         super(service);
     }
 }

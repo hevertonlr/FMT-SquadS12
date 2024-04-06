@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("disciplina")
 public class DisciplinaController extends GenericController<DisciplinaEntity> {
 
-    public DisciplinaController(IGenericService<DisciplinaEntity> service) {
+    public DisciplinaController(DisciplinaService service) {
         super(service);
     }
 }

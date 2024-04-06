@@ -1,8 +1,7 @@
 package com.fmt.app.average.controllers;
 
-import com.fmt.app.average.entities.GenericEntity;
-import com.fmt.app.average.interfaces.IGenericController;
-import com.fmt.app.average.interfaces.IGenericService;
+import com.fmt.app.average.interfaces.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-public class GenericController<T extends GenericEntity> implements IGenericController<T> {
+public class GenericController<T extends IGenericEntity<T>> implements IGenericController<T> {
 
     protected final IGenericService<T> service;
 

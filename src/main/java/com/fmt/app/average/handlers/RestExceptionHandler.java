@@ -3,8 +3,13 @@ package com.fmt.app.average.handlers;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.fmt.app.average.Utils.Util.getError;
 
@@ -18,9 +23,12 @@ public class RestExceptionHandler {
     public ResponseEntity<?> handler(DataIntegrityViolationException e){
         return getError(HttpStatus.BAD_REQUEST,e);
     }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handler(NotFoundException e){
         return getError(HttpStatus.NOT_FOUND,e);
+    }
+    @ExceptionHandler(InvalidException.class)
+    public ResponseEntity<?> handler(InvalidException e){
+        return getError(HttpStatus.BAD_REQUEST,e);
     }
 }

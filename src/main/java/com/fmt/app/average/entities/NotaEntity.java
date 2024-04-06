@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "notas")
 @EqualsAndHashCode(callSuper = true)
-public class NotaEntity extends GenericEntity{
+public class NotaEntity extends GenericEntity<NotaEntity>{
     @ColumnDefault(value = "0.00")
     @Column(precision = 5,scale = 2,nullable = false)
     private BigDecimal nota;
@@ -27,4 +27,11 @@ public class NotaEntity extends GenericEntity{
     @ManyToOne
     @JoinColumn(name = "disciplina_matricula_id",nullable = false)
     private MatriculaEntity matricula;
+
+    @Override
+    public void update(NotaEntity source) {
+        this.nota = source.nota;
+        this.coeficiente = source.getCoeficiente();
+    }
+
 }

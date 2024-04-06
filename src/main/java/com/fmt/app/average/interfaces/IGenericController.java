@@ -1,11 +1,10 @@
 package com.fmt.app.average.interfaces;
 
-import com.fmt.app.average.entities.GenericEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface IGenericController<T extends GenericEntity> {
+public interface IGenericController<T extends IGenericEntity<T>> {
 
     ResponseEntity<T> findById(Long id);
 

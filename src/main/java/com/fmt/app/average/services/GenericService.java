@@ -1,9 +1,9 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.entities.GenericEntity;
+import com.fmt.app.average.handlers.InvalidException;
 import com.fmt.app.average.handlers.NotFoundException;
-import com.fmt.app.average.interfaces.IGenericRepository;
-import com.fmt.app.average.interfaces.IGenericService;
+import com.fmt.app.average.interfaces.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,14 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 
 @Slf4j
 @Service
-public abstract class GenericService<T extends GenericEntity> implements IGenericService<T> {
+public abstract class GenericService<T extends IGenericEntity<T>> implements IGenericService<T> {
     private final String entityName;
     protected final IGenericRepository<T> repository;
 
     public GenericService(IGenericRepository<T> repository) {
         this.repository = repository;
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-        this.entityName = ((Class<?>) type.getActualTypeArguments()[0]).getSimpleName();
+        this.entityName = ((Class<?>) type.getActualTypeArguments()[0]).getSimpleName().replace("Entity","");
     }
 
     @Override
@@ -34,7 +34,7 @@ public abstract class GenericService<T extends GenericEntity> implements IGeneri
     }
 
     @Override
-    public T findById(long id) {
+    public T findById(Long id) {
         log.info("Buscando " + entityName + " por id ({})", id);
 
         T entity = repository.findById(id).orElseThrow(() -> {
@@ -51,26 +51,16 @@ public abstract class GenericService<T extends GenericEntity> implements IGeneri
     @Override
     public T insert(T entity) {
         entity.setId(null);
-
-        log.info("Criando " + entityName + " -> Salvar: \n{}\n", objetoParaJson(entity));
-        entity = repository.save(entity);
-
-        log.info("Criando " + entityName + " -> Salvo com sucesso");
-        log.debug("Criando " + entityName + " -> Registro Salvo: \n{}\n", objetoParaJson(entity));
-        return entity;
+        return save(entity,"Criando");
     }
 
     @Override
     public T update(T entity) {
-        log.info("Alterando " + entityName + " com id ({}) -> Salvar: \n{}\n", entity.getId(), objetoParaJson(entity));
-        entity = repository.save(entity);
-        log.info("Alterando " + entityName + " -> Salvo com sucesso");
-        log.debug("Alterando " + entityName + " -> Registro Salvo: \n{}\n", objetoParaJson(entity));
-        return entity;
+        return save(entity,"Alterando");
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         repository.findById(id)
                 .ifPresentOrElse(
                         repository::delete,
@@ -79,5 +69,21 @@ public abstract class GenericService<T extends GenericEntity> implements IGeneri
                             throw new NotFoundException(entityName + " não encontrado com id: " + id);
                         });
         log.info("Excluindo " + entityName + " com id ({}) -> Excluído com sucesso", id);
+    }
+
+    private T save(T entity,String action) {
+        T finalEntity = entity;
+        String initLogMessage = action + " " + entityName;
+        if(action.equals("Alterando")) {
+            finalEntity = findById(entity.getId());
+            finalEntity.update(entity);
+            log.info(initLogMessage + " com id ({}) -> Salvar: \n{}\n", finalEntity.getId(), objetoParaJson(finalEntity));
+        }else
+            log.info(initLogMessage + " -> Salvar: \n{}\n", objetoParaJson(finalEntity));
+
+        finalEntity = repository.save(finalEntity);
+        log.info(initLogMessage + " -> Salvo com sucesso");
+        log.debug(initLogMessage + " -> Registro Salvo: \n{}\n", objetoParaJson(finalEntity));
+        return finalEntity;
     }
 }

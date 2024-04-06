@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "disciplina_matricula")
 @EqualsAndHashCode(callSuper = true)
-public class MatriculaEntity extends GenericEntity {
+public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
 
     @ColumnDefault(value = "NOW()")
     @Temporal(value = TemporalType.DATE)
@@ -30,4 +30,11 @@ public class MatriculaEntity extends GenericEntity {
     @ManyToOne
     @JoinColumn(name = "disciplina_id",nullable = false)
     private DisciplinaEntity disciplina;
+
+    @Override
+    public void update(MatriculaEntity source) {
+        this.dataMatricula = source.getDataMatricula();
+        this.mediaFinal = source.getMediaFinal();
+    }
+
 }
