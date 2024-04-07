@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("nota")
-public class NotaController extends GenericController<NotaEntity> {
+public class NotaController {
 
-    public NotaController(NotaService service) {
-        super(service);
-    }
+
 }
