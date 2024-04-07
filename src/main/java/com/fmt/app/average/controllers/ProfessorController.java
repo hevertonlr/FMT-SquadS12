@@ -17,7 +17,7 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("professor")
+@RequestMapping("professores")
 public class ProfessorController {
     protected final ProfessorService service;
 
