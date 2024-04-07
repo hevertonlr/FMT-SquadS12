@@ -37,12 +37,9 @@ public class DisciplinaEntity{
 
     @Column(length = 150,nullable = false)
     private String nome;
+
     @ManyToOne
     @JoinColumn(name = "professor_id",nullable = false)
     private ProfessorEntity professor;
-
-    public void update(DisciplinaEntity source) {
-        this.nome = source.getNome();
-    }
 
 }
