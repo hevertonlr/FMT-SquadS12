@@ -15,20 +15,25 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @Service
 public class ProfessorService {
+    private String entityName = "Professor";
     @Autowired
     private ProfessorRepository repository;
 
     public List<ProfessorEntity> findAll() {
+        log.info("Buscando todos os " + entityName);
         List<ProfessorEntity> entities = repository.findAll();
+        log.info("Buscando todos os " + entityName + " -> {} Encontrados", entities.size());
+        log.debug("Buscando todos os " + entityName + " -> Registros encontrados:\n{}\n", objetoParaJson(entities));
         return entities;
     }
 
     public ProfessorEntity findById(Long id) {
-
+        log.info("Buscando " + entityName + " por id ({})", id);
         ProfessorEntity entity = repository.findById(id).orElseThrow(() -> {
             return new NotFoundException("Professor não encontrado com id: " + id);
         });
-
+        log.info("Buscando " + entityName + " por id ({}) -> Encontrado", id);
+        log.debug("Buscando " + entityName + " por id ({}) -> Registro encontrado:\n{}\n", id, objetoParaJson(entity));
         return entity;
     }
 
@@ -46,22 +51,26 @@ public class ProfessorService {
                 .ifPresentOrElse(
                         repository::delete,
                         () -> {
+                            log.info("Excluindo " + entityName + " com id ({}) -> Excluindo", id);
                             throw new NotFoundException("Professor não encontrado com id: " + id);
                         });
-
+        log.info("Excluindo " + entityName + " com id ({}) -> Excluído com sucesso", id);
     }
 
     private ProfessorEntity save(ProfessorEntity entity,String action) {
         ProfessorEntity finalEntity = entity;
-
+        String initLogMessage = action + " " + entityName;
         if (action.equals("Alterando")) {
             finalEntity = findById(entity.getId());
             finalEntity.update(entity);
-        } else {
-            finalEntity = repository.save(finalEntity);
-
-            return finalEntity;
+            log.info(initLogMessage + " com id ({}) -> Salvar: \n{}\n", finalEntity.getId(), objetoParaJson(finalEntity));
+        }else {
+            log.info(initLogMessage + " -> Salvar: \n{}\n", objetoParaJson(finalEntity));
         }
+
+        finalEntity = repository.save(finalEntity);
+        log.info(initLogMessage + " -> Salvo com sucesso");
+        log.debug(initLogMessage + " -> Registro Salvo: \n{}\n", objetoParaJson(finalEntity));
         return finalEntity;
     }
 }
