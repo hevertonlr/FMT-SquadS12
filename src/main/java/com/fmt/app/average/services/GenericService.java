@@ -71,7 +71,7 @@ public abstract class GenericService<T extends IGenericEntity<T>> implements IGe
         log.info("Excluindo " + entityName + " com id ({}) -> Excluído com sucesso", id);
     }
 
-    private T save(T entity,String action) {
+    T save(T entity,String action) {
         T finalEntity = entity;
         String initLogMessage = action + " " + entityName;
         if(action.equals("Alterando")) {

@@ -32,7 +32,7 @@ public class DisciplinaService extends GenericService<DisciplinaEntity> {
     }
 
 
-    private DisciplinaEntity save(DisciplinaEntity entity, String action) {
+    DisciplinaEntity save(DisciplinaEntity entity, String action) {
         DisciplinaEntity finalEntity = entity;
         String initLogMessage = action + ' ' + entityName;
         if(action.equals("Alterando")) {

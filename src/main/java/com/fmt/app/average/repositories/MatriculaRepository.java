@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface MatriculaRepository extends IGenericRepository<MatriculaEntity> {
-    List<MatriculaEntity> findByAlunoId(Long idAluno);
-    List<MatriculaEntity> findByDisciplinaId(Long idDisciplina);
+    List<MatriculaEntity> findAllByAlunoId(Long idAluno);
+    List<MatriculaEntity> findAllByDisciplinaId(Long idDisciplina);
 }
