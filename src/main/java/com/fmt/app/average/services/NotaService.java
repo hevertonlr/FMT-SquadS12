@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotaService extends GenericService<NotaEntity> {
-    public NotaService(IGenericRepository<NotaEntity> repository){
-        super(repository);
-    }
+public class NotaService {
+
 }

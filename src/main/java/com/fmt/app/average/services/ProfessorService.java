@@ -16,7 +16,7 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 public class ProfessorService {
     private String entityName;
     private ProfessorRepository repository;
-    void GenericService(ProfessorRepository repository) {
+    ProfessorService(ProfessorRepository repository) {
         this.repository = repository;
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
         this.entityName = ((Class<?>) type.getActualTypeArguments()[0]).getSimpleName().replace("Entity","");

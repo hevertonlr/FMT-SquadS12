@@ -6,8 +6,6 @@ import com.fmt.app.average.repositories.MatriculaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MatriculaService extends GenericService<MatriculaEntity> {
-    public MatriculaService(MatriculaRepository repository){
-        super(repository);
-    }
+public class MatriculaService {
+
 }
