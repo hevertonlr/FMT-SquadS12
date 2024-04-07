@@ -1,10 +1,10 @@
 package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.entities.ProfessorEntity;
-import com.fmt.app.average.interfaces.IGenericService;
 import com.fmt.app.average.services.ProfessorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,8 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @RestController
 @RequestMapping("professores")
 public class ProfessorController {
-    protected final ProfessorService service;
+
+    private ProfessorService service;
 
     @GetMapping("{id}")
     public ResponseEntity<ProfessorEntity> findById(@PathVariable Long id) {
