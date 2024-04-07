@@ -9,10 +9,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,11 +28,15 @@ public abstract class GenericEntity<T> implements Serializable, IGenericEntity<T
     private Long id;
 
     @CreatedDate
-    @ColumnDefault(value = "NOW()")
-    protected LocalDateTime createdAt;
+    @CreationTimestamp
+    //@ColumnDefault(value = "NOW()")
+    protected Instant createdAt;
+    //protected LocalDateTime createdAt;
 
     @LastModifiedDate
-    @ColumnDefault(value = "NOW()")
-    protected LocalDateTime modifyAt;
+    @UpdateTimestamp
+    //@ColumnDefault(value = "NOW()")
+    protected Instant modifyAt;
+    //protected LocalDateTime modifyAt;
 
 }

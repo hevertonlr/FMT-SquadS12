@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,14 +16,15 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
 
-    @ColumnDefault(value = "NOW()")
+    //@ColumnDefault(value = "CURRENT_DATE")
+    @CreationTimestamp
     @Temporal(value = TemporalType.DATE)
-    @Column(name="data_matricula", nullable = false)
+    @Column(name="data_matricula",nullable = false)
     private LocalDate dataMatricula;
 
     @ColumnDefault(value = "0.00")
     @Column(name="media_final", precision = 5,scale = 2,nullable = false)
-    private BigDecimal mediaFinal;
+    private BigDecimal mediaFinal= BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "aluno_id",nullable = false)
