@@ -48,7 +48,7 @@ public class MatriculaEntity {
 
     @ColumnDefault(value = "0.00")
     @Column(name="media_final", precision = 5,scale = 2,nullable = false)
-    private BigDecimal mediaFinal;
+    private BigDecimal mediaFinal= BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "aluno_id",nullable = false)
