@@ -1,7 +1,6 @@
 package com.fmt.app.average.services;
 
 import com.fmt.app.average.entities.AlunoEntity;
-import com.fmt.app.average.interfaces.IGenericRepository;
 import com.fmt.app.average.repositories.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
