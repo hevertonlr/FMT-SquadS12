@@ -2,6 +2,8 @@ package com.fmt.app.average.services;
 
 import com.fmt.app.average.entities.MatriculaEntity;
 import com.fmt.app.average.handlers.NotFoundException;
+import com.fmt.app.average.repositories.AlunoRepository;
+import com.fmt.app.average.repositories.DisciplinaRepository;
 import com.fmt.app.average.repositories.MatriculaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,11 @@ public class MatriculaService {
 
     @Autowired
     private MatriculaRepository matriculaRepository;
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
 
     public List<MatriculaEntity> listarTodasMatriculas() {
         return matriculaRepository.findAll();
@@ -49,6 +56,20 @@ public class MatriculaService {
 
     public void deletar(Long id) {
         matriculaRepository.deleteById(id);
+    }
+
+    public List<MatriculaEntity> buscarTodasMatriculasPorAlunoId(Long id) {
+        alunoRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Aluno não encontrado com id: " + id)
+        );
+        return matriculaRepository.findAllByAlunoId(id);
+    }
+
+    public List<MatriculaEntity> buscarTodasMatriculasPorDisciplinaId(Long id) {
+        disciplinaRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Disciplina não encontrada com id: " + id)
+        );
+        return matriculaRepository.findAllByDisciplinaId(id);
     }
 
 }

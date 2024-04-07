@@ -13,4 +13,7 @@ import java.util.Optional;
 public interface MatriculaRepository extends JpaRepository<MatriculaEntity, Long> {
     List<MatriculaEntity> findByAlunoId(Long idAluno);
     List<MatriculaEntity> findByDisciplinaId(Long idDisciplina);
+
+    List<MatriculaEntity> findAllByAlunoId(Long idAluno);
+    List<MatriculaEntity> findAllByDisciplinaId(Long idDisciplina);
 }

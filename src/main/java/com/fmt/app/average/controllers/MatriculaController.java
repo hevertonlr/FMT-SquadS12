@@ -33,6 +33,18 @@ public class MatriculaController {
         }
     }
 
+    @GetMapping("/alunos/{id}")
+    public ResponseEntity<List<MatriculaEntity>> buscarTodasMatricularPorAlunoId(@PathVariable Long id) {
+        List<MatriculaEntity> entities = matriculaService.buscarTodasMatriculasPorAlunoId(id);
+        return ResponseEntity.ok(entities);
+    }
+
+    @GetMapping("/disciplinas/{id}")
+    public ResponseEntity<List<MatriculaEntity>> buscarTodasMatriculasPorDisciplinaId(@PathVariable Long id) {
+        List<MatriculaEntity> entities = matriculaService.buscarTodasMatriculasPorDisciplinaId(id);
+        return ResponseEntity.ok(entities);
+    }
+
     @PostMapping
     public ResponseEntity<MatriculaEntity> cadastrarMatricula(@RequestBody MatriculaEntity matricula) {
         MatriculaEntity novaMatricula = matriculaService.cadastrar(matricula);
