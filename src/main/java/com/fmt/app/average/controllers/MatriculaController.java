@@ -51,8 +51,13 @@ public class MatriculaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarMatricula(@PathVariable Long id) {
-        matriculaService.deletar(id);
-        return ResponseEntity.noContent().build();
+        boolean notasLancadas = matriculaService.verificarNotasLancadas(id);
+        if (notasLancadas){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            matriculaService.deletar(id);
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }

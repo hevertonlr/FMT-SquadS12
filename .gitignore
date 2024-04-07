@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Average App ###
+src/main/resources/
