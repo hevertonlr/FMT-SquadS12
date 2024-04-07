@@ -1,57 +1,43 @@
 package com.fmt.app.average.services;
 
 import com.fmt.app.average.entities.DisciplinaEntity;
-import com.fmt.app.average.entities.ProfessorEntity;
-import com.fmt.app.average.handlers.NotFoundException;
-import com.fmt.app.average.interfaces.IGenericRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.fmt.app.average.repositories.DisciplinaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.fmt.app.average.Utils.Util.objetoParaJson;
+import java.util.List;
+import java.util.Optional;
 
-@Slf4j
 @Service
-public class DisciplinaService extends GenericService<DisciplinaEntity> {
-    private final String entityName = "Disciplina";
-    private final IGenericRepository<ProfessorEntity> professorRepository;
+public class DisciplinaService {
 
-    public DisciplinaService(IGenericRepository<DisciplinaEntity> repository, IGenericRepository<ProfessorEntity> professorRepository) {
-        super(repository);
-        this.professorRepository = professorRepository;
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
+    public List<DisciplinaEntity> listarTodasDisciplinas() {
+        return disciplinaRepository.findAll();
     }
 
-    @Override
-    public DisciplinaEntity insert(DisciplinaEntity entity) {
-        entity.setId(null);
-        return save(entity, "Criando");
+    public DisciplinaEntity buscarDisciplinaPorId(Long id) {
+        Optional<DisciplinaEntity> optionalDisciplina = disciplinaRepository.findById(id);
+        return optionalDisciplina.orElse(null);
     }
 
-    @Override
-    public DisciplinaEntity update(DisciplinaEntity entity) {
-        return save(entity, "Alterando");
+    public DisciplinaEntity cadastrar(DisciplinaEntity disciplina) {
+        return disciplinaRepository.save(disciplina);
     }
 
-
-    private DisciplinaEntity save(DisciplinaEntity entity, String action) {
-        DisciplinaEntity finalEntity = entity;
-        String initLogMessage = action + ' ' + entityName;
-        if(action.equals("Alterando")) {
-            finalEntity = findById(entity.getId());
-            finalEntity.update(entity);
-            log.info(initLogMessage + " com id ({}) -> Salvar: \n{}\n", finalEntity.getId(), objetoParaJson(finalEntity));
-        }else
-            log.info(initLogMessage + " -> Salvar: \n{}\n", objetoParaJson(finalEntity));
-
-        Long idProfessor = entity.getProfessor().getId();
-        professorRepository.findById(idProfessor).ifPresentOrElse(
-                finalEntity::setProfessor,
-                () -> {
-                    throw new NotFoundException("Professor não encontrado com id: " + idProfessor);
-                });
-
-        finalEntity = repository.save(finalEntity);
-        log.info(initLogMessage + " -> Salvo com sucesso");
-        log.debug(initLogMessage + " -> Registro Salvo: \n{}\n", objetoParaJson(finalEntity));
-        return finalEntity;
+    public DisciplinaEntity atualizar(Long id, DisciplinaEntity disciplina) {
+        if (disciplinaRepository.existsById(id)) {
+            disciplina.setId(id);
+            return disciplinaRepository.save(disciplina);
+        } else {
+            return null;
+        }
     }
+
+    public void deletar(Long id) {
+        disciplinaRepository.deleteById(id);
+    }
+
 }
