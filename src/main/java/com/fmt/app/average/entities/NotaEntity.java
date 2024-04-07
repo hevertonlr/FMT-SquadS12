@@ -2,7 +2,6 @@ package com.fmt.app.average.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -10,8 +9,12 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "notas")
-@EqualsAndHashCode(callSuper = true)
-public class NotaEntity extends GenericEntity<NotaEntity>{
+public class NotaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ColumnDefault(value = "0.00")
     @Column(precision = 5,scale = 2,nullable = false)
     private BigDecimal nota;
@@ -27,11 +30,5 @@ public class NotaEntity extends GenericEntity<NotaEntity>{
     @ManyToOne
     @JoinColumn(name = "disciplina_matricula_id",nullable = false)
     private MatriculaEntity matricula;
-
-    @Override
-    public void update(NotaEntity source) {
-        this.nota = source.nota;
-        this.coeficiente = source.getCoeficiente();
-    }
 
 }
