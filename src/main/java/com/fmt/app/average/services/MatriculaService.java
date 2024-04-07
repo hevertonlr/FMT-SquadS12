@@ -5,6 +5,7 @@ import com.fmt.app.average.handlers.NotFoundException;
 import com.fmt.app.average.repositories.AlunoRepository;
 import com.fmt.app.average.repositories.DisciplinaRepository;
 import com.fmt.app.average.repositories.MatriculaRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.fmt.app.average.Utils.Util.objetoParaJson;
+
+@Slf4j
 @Service
 public class MatriculaService {
 
@@ -66,10 +70,15 @@ public class MatriculaService {
     }
 
     public List<MatriculaEntity> buscarTodasMatriculasPorDisciplinaId(Long id) {
+        String entityName = "Matricula";
         disciplinaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Disciplina não encontrada com id: " + id)
         );
-        return matriculaRepository.findAllByDisciplinaId(id);
+        log.info("Buscando todos os " + entityName + " por id de Disciplina");
+        List<MatriculaEntity> entities = matriculaRepository.findByDisciplinaId(id);
+        log.info("Buscando todos os " + entityName + " por id de Disciplina -> {} Encontrados", entities.size());
+        log.debug("Buscando todos os " + entityName + " por id de Disciplina -> Registros encontrados:\n{}\n", objetoParaJson(entities));
+        return entities;
     }
 
 }
