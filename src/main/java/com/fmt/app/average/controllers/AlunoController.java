@@ -1,16 +1,26 @@
 package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.entities.AlunoEntity;
-import com.fmt.app.average.interfaces.IGenericService;
 import com.fmt.app.average.services.AlunoService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("aluno")
-public class AlunoController extends GenericController<AlunoEntity> {
-    public AlunoController(AlunoService service) {
-        super(service);
+@RequestMapping("/alunos")
+public class AlunoController {
+
+    @Autowired
+    private AlunoService alunoService;
+
+    @GetMapping
+    public ResponseEntity<List<AlunoEntity>> listarAlunos() {
+        List<AlunoEntity> alunos = alunoService.listarTodosAlunos();
+        return ResponseEntity.ok(alunos);
     }
+
 }
