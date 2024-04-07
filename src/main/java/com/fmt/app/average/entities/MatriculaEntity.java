@@ -1,5 +1,9 @@
 package com.fmt.app.average.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,10 +20,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
 
-    //@ColumnDefault(value = "CURRENT_DATE")
     @CreationTimestamp
     @Temporal(value = TemporalType.DATE)
     @Column(name="data_matricula",nullable = false)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dataMatricula;
 
     @ColumnDefault(value = "0.00")
