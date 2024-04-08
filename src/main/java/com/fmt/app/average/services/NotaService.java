@@ -45,7 +45,7 @@ public class NotaService extends GenericService<NotaEntity> {
         entity.setMatricula(matriculaEntity);
         entity.setProfessor(matriculaEntity.getDisciplina().getProfessor());
         NotaEntity inserted = saveGeneric(entity,"Criando");
-        matriculaService.calcularMediaFinal(inserted.getMatricula());
+        matriculaService.updateFinalAverage(inserted.getMatricula());
         return inserted;
     }
 
@@ -56,7 +56,7 @@ public class NotaService extends GenericService<NotaEntity> {
                         nota -> {
                             MatriculaEntity matricula = nota.getMatricula();
                             repository.delete(nota);
-                            matriculaService.calcularMediaFinal(matricula);
+                            matriculaService.updateFinalAverage(matricula);
                         },
                         () -> {
                             log.info("Excluindo " + entityName + " com id ({}) -> Excluindo", id);

@@ -69,7 +69,7 @@ public class MatriculaService extends GenericService<MatriculaEntity> {
         return entities;
     }
 
-    public void calcularMediaFinal(MatriculaEntity matricula) {
+    public void updateFinalAverage(MatriculaEntity matricula) {
         List<NotaEntity> notas = notaRepository.findAllByMatriculaId(matricula.getId());
         if(notas.isEmpty()) return;
 
