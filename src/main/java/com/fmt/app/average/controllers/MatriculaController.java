@@ -2,6 +2,7 @@ package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.entities.MatriculaEntity;
 import com.fmt.app.average.services.MatriculaService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,9 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @RestController
 @RequestMapping("/matriculas")
+@RequiredArgsConstructor
 public class MatriculaController {
-
-    @Autowired
-    private MatriculaService matriculaService;
+    private final MatriculaService matriculaService;
 
     @GetMapping
     public ResponseEntity<List<MatriculaEntity>> listarMatriculas() {

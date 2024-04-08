@@ -2,26 +2,31 @@ package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.entities.AlunoEntity;
 import com.fmt.app.average.services.AlunoService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.fmt.app.average.Utils.Util.objetoParaJson;
 
 @Slf4j
-@AllArgsConstructor
 @RestController
 @RequestMapping("/alunos")
+@RequiredArgsConstructor
 public class AlunoController {
+    private final AlunoService alunoService;
 
-    @Autowired
-    private AlunoService alunoService;
+    @GetMapping({"/{id}/media"})
+    public ResponseEntity<BigDecimal> calcularMediaGeral(@PathVariable Long id) {
+        BigDecimal mediaGeral = alunoService.calcularMediaGeral(id);
+        return ResponseEntity.ok(mediaGeral);
+    }
 
     @GetMapping
     public ResponseEntity<List<AlunoEntity>> listarAlunos() {

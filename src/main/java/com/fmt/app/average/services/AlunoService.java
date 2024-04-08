@@ -1,18 +1,43 @@
 package com.fmt.app.average.services;
 
 import com.fmt.app.average.entities.AlunoEntity;
+import com.fmt.app.average.entities.MatriculaEntity;
 import com.fmt.app.average.repositories.AlunoRepository;
+import com.fmt.app.average.repositories.MatriculaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AlunoService {
+    private final AlunoRepository alunoRepository;
+    private final MatriculaRepository matriculaRepository;
 
-    @Autowired
-    private AlunoRepository alunoRepository;
+    public BigDecimal calcularMediaGeral(Long id) {
+        buscarAlunoPorId(id);
+        List<MatriculaEntity> matriculas = matriculaRepository.findAllByAlunoId(id);
+
+        int numMatriculas = 0;
+        BigDecimal totalMedias = BigDecimal.ZERO;
+
+        for (MatriculaEntity matricula : matriculas) {
+            BigDecimal mediaMatricula = matricula.getMediaFinal();
+            totalMedias = totalMedias.add(mediaMatricula);
+            numMatriculas += 1;
+        }
+
+        return totalMedias.divide(
+                BigDecimal.valueOf(numMatriculas),
+                RoundingMode.HALF_UP
+        );
+    }
 
     public List<AlunoEntity> listarTodosAlunos() {
         return alunoRepository.findAll();
