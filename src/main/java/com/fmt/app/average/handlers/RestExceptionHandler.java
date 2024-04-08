@@ -27,4 +27,8 @@ public class RestExceptionHandler {
     public ResponseEntity<?> handler(InvalidException e){
         return getError(HttpStatus.BAD_REQUEST,e);
     }
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<?> handler(InvalidOperationException e){
+        return getError(HttpStatus.NOT_IMPLEMENTED,e);
+    }
 }

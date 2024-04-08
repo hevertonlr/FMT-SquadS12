@@ -1,6 +1,7 @@
 package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.entities.NotaEntity;
+import com.fmt.app.average.handlers.InvalidOperationException;
 import com.fmt.app.average.services.NotaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,6 @@ public class NotaController extends GenericController<NotaEntity> {
 
     @Override
     public ResponseEntity<NotaEntity> update(@RequestBody NotaEntity entity) {
-        return null;
+        throw new InvalidOperationException("Método não implementado!");
     }
 }
