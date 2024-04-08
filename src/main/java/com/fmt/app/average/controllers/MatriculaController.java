@@ -1,9 +1,8 @@
 package com.fmt.app.average.controllers;
 
+import com.fmt.app.average.controllers.dto.FinalAverageResponse;
 import com.fmt.app.average.entities.MatriculaEntity;
-import com.fmt.app.average.interfaces.IGenericService;
 import com.fmt.app.average.services.MatriculaService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,26 +24,31 @@ public class MatriculaController extends GenericController<MatriculaEntity> {
         this.service = service;
     }
 
-    @GetMapping("aluno/{idAluno}")
-    public ResponseEntity<List<MatriculaEntity>> findByAlunoId(@PathVariable Long idAluno) {
+    @GetMapping("aluno/{id}")
+    public ResponseEntity<List<MatriculaEntity>> findByAlunoId(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        return ResponseEntity.ok(findBySomething(idAluno,requestedValue,"Aluno"));
+        return ResponseEntity.ok(findBySomething(id,requestedValue,"Aluno"));
     }
 
-    @GetMapping("disciplina/{idDisciplina}")
-    public ResponseEntity<List<MatriculaEntity>> findByDisciplinaId(@PathVariable Long idDisciplina) {
+    @GetMapping("disciplina/{id}")
+    public ResponseEntity<List<MatriculaEntity>> findByDisciplinaId(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        return ResponseEntity.ok(findBySomething(idDisciplina,requestedValue,"Disciplina"));
+        return ResponseEntity.ok(findBySomething(id,requestedValue,"Disciplina"));
     }
 
     private List<MatriculaEntity> findBySomething(Long id, String requestedValue,String somethingType){
-        log.info("GET "+requestedValue+" -> Início");
+        log.info("GET {} -> Início", requestedValue);
         List<MatriculaEntity> entities = (somethingType.equals("Aluno"))
                 ? service.findByAlunoId(id)
                 : service.findByDisciplinaId(id);
-        log.info("GET "+requestedValue+" -> Encontrados {} registros", entities.size());
-        log.info("GET "+requestedValue+" -> 200 OK");
-        log.debug("GET "+requestedValue+" -> Response Body:\n{}\n", objetoParaJson(entities));
+        log.info("GET {} -> Encontrados {} registros", requestedValue, entities.size());
+        log.info("GET {} -> 200 OK", requestedValue);
+        log.debug("GET {} -> Response Body:\n{}\n", requestedValue, objetoParaJson(entities));
         return entities;
+    }
+
+    @GetMapping("mediafinal/{id}")
+    public ResponseEntity<FinalAverageResponse> finalAverage(@PathVariable Long id){
+        return ResponseEntity.ok(new FinalAverageResponse(service.getFinalAverage(id)));
     }
 }

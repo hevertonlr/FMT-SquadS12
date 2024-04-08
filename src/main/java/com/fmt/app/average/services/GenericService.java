@@ -1,9 +1,7 @@
 package com.fmt.app.average.services;
 
-import com.fmt.app.average.handlers.InvalidException;
 import com.fmt.app.average.handlers.NotFoundException;
 import com.fmt.app.average.interfaces.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,24 +24,24 @@ public abstract class GenericService<T extends IGenericEntity<T>> implements IGe
 
     @Override
     public List<T> findAll() {
-        log.info("Buscando todos os " + entityName);
+        log.info("Buscando todos os {}", entityName);
         List<T> entities = repository.findAll();
-        log.info("Buscando todos os " + entityName + " -> {} Encontrados", entities.size());
-        log.debug("Buscando todos os " + entityName + " -> Registros encontrados:\n{}\n", objetoParaJson(entities));
+        log.info("Buscando todos os {} -> {} Encontrados", entityName, entities.size());
+        log.debug("Buscando todos os {} -> Registros encontrados:\n{}\n", entityName, objetoParaJson(entities));
         return entities;
     }
 
     @Override
     public T findById(Long id) {
-        log.info("Buscando " + entityName + " por id ({})", id);
+        log.info("Buscando {} por id ({})", entityName, id);
 
         T entity = repository.findById(id).orElseThrow(() -> {
-           log.error("Buscando " + entityName + " por id ({}) -> NÃO Encontrado", id);
+            log.error("Buscando {} por id ({}) -> NÃO Encontrado", entityName, id);
            return new NotFoundException(entityName + " não encontrado com id: " + id);
         });
 
-        log.info("Buscando " + entityName + " por id ({}) -> Encontrado", id);
-        log.debug("Buscando " + entityName + " por id ({}) -> Registro encontrado:\n{}\n", id, objetoParaJson(entity));
+        log.info("Buscando {} por id ({}) -> Encontrado", entityName, id);
+        log.debug("Buscando {} por id ({}) -> Registro encontrado:\n{}\n", entityName, id, objetoParaJson(entity));
 
         return entity;
     }
@@ -51,12 +49,12 @@ public abstract class GenericService<T extends IGenericEntity<T>> implements IGe
     @Override
     public T insert(T entity) {
         entity.setId(null);
-        return save(entity,"Criando");
+        return saveGeneric(entity,"Criando");
     }
 
     @Override
     public T update(T entity) {
-        return save(entity,"Alterando");
+        return saveGeneric(entity,"Alterando");
     }
 
     @Override
@@ -65,25 +63,25 @@ public abstract class GenericService<T extends IGenericEntity<T>> implements IGe
                 .ifPresentOrElse(
                         repository::delete,
                         () -> {
-                            log.info("Excluindo " + entityName + " com id ({}) -> Excluindo", id);
+                            log.info("Excluindo {} com id ({}) -> Excluindo", entityName, id);
                             throw new NotFoundException(entityName + " não encontrado com id: " + id);
                         });
-        log.info("Excluindo " + entityName + " com id ({}) -> Excluído com sucesso", id);
+        log.info("Excluindo {} com id ({}) -> Excluído com sucesso", entityName, id);
     }
 
-    private T save(T entity,String action) {
+    protected T saveGeneric(T entity, String action) {
         T finalEntity = entity;
         String initLogMessage = action + " " + entityName;
         if(action.equals("Alterando")) {
             finalEntity = findById(entity.getId());
             finalEntity.update(entity);
-            log.info(initLogMessage + " com id ({}) -> Salvar: \n{}\n", finalEntity.getId(), objetoParaJson(finalEntity));
+            log.info("{} com id ({}) -> Salvar: \n{}\n", initLogMessage, finalEntity.getId(), objetoParaJson(finalEntity));
         }else
-            log.info(initLogMessage + " -> Salvar: \n{}\n", objetoParaJson(finalEntity));
+            log.info("{} -> Salvar: \n{}\n", initLogMessage, objetoParaJson(finalEntity));
 
         finalEntity = repository.save(finalEntity);
-        log.info(initLogMessage + " -> Salvo com sucesso");
-        log.debug(initLogMessage + " -> Registro Salvo: \n{}\n", objetoParaJson(finalEntity));
+        log.info("{} -> Salvo com sucesso", initLogMessage);
+        log.debug("{} -> Registro Salvo: \n{}\n", initLogMessage, objetoParaJson(finalEntity));
         return finalEntity;
     }
 }
