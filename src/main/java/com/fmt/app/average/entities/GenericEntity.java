@@ -1,14 +1,15 @@
 package com.fmt.app.average.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fmt.app.average.interfaces.IGenericEntity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -25,11 +26,18 @@ public abstract class GenericEntity<T> implements Serializable, IGenericEntity<T
     private Long id;
 
     @CreatedDate
-    @ColumnDefault(value = "NOW()")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
+    @Temporal(value = TemporalType.TIMESTAMP)
     protected LocalDateTime createdAt;
 
+
     @LastModifiedDate
-    @ColumnDefault(value = "NOW()")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @UpdateTimestamp
+    @Temporal(value = TemporalType.TIMESTAMP)
     protected LocalDateTime modifyAt;
 
 }

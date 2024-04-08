@@ -34,7 +34,7 @@ public class GenericController<T extends IGenericEntity<T>> implements IGenericC
     }
 
     @Override
-    @GetMapping("list")
+    @GetMapping()
     public ResponseEntity<List<T>> list() {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
         log.info("GET "+requestedValue+" -> Início");
