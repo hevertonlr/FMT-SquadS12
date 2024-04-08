@@ -24,17 +24,14 @@ public class AlunoService {
         buscarAlunoPorId(id);
         List<MatriculaEntity> matriculas = matriculaRepository.findAllByAlunoId(id);
 
-        int numMatriculas = 0;
         BigDecimal totalMedias = BigDecimal.ZERO;
 
         for (MatriculaEntity matricula : matriculas) {
-            BigDecimal mediaMatricula = matricula.getMediaFinal();
-            totalMedias = totalMedias.add(mediaMatricula);
-            numMatriculas += 1;
+            totalMedias = totalMedias.add(matricula.getMediaFinal());
         }
 
         return totalMedias.divide(
-                BigDecimal.valueOf(numMatriculas),
+                BigDecimal.valueOf(matriculas.size()),
                 RoundingMode.HALF_UP
         );
     }
