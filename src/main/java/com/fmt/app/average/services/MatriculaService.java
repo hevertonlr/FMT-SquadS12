@@ -1,15 +1,19 @@
 package com.fmt.app.average.services;
 
 import com.fmt.app.average.entities.MatriculaEntity;
+import com.fmt.app.average.entities.NotaEntity;
 import com.fmt.app.average.handlers.NotFoundException;
 import com.fmt.app.average.repositories.AlunoRepository;
 import com.fmt.app.average.repositories.DisciplinaRepository;
 import com.fmt.app.average.repositories.MatriculaRepository;
+import com.fmt.app.average.repositories.NotaRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +21,12 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MatriculaService {
-
-    @Autowired
-    private MatriculaRepository matriculaRepository;
-    @Autowired
-    private AlunoRepository alunoRepository;
-
-    @Autowired
-    private DisciplinaRepository disciplinaRepository;
+    private final MatriculaRepository matriculaRepository;
+    private final AlunoRepository alunoRepository;
+    private final DisciplinaRepository disciplinaRepository;
+    private final NotaRepository notaRepository;
 
     public List<MatriculaEntity> listarTodasMatriculas() {
         return matriculaRepository.findAll();
@@ -37,6 +38,10 @@ public class MatriculaService {
     }
 
     public MatriculaEntity cadastrar(MatriculaEntity matricula) {
+        matricula.setId(null);
+
+
+
         return matriculaRepository.save(matricula);
     }
 
@@ -75,10 +80,27 @@ public class MatriculaService {
                 () -> new NotFoundException("Disciplina não encontrada com id: " + id)
         );
         log.info("Buscando todos os " + entityName + " por id de Disciplina");
-        List<MatriculaEntity> entities = matriculaRepository.findByDisciplinaId(id);
+        List<MatriculaEntity> entities = matriculaRepository.findAllByDisciplinaId(id);
         log.info("Buscando todos os " + entityName + " por id de Disciplina -> {} Encontrados", entities.size());
         log.debug("Buscando todos os " + entityName + " por id de Disciplina -> Registros encontrados:\n{}\n", objetoParaJson(entities));
         return entities;
+    }
+
+    public void calcularMediaFinal(MatriculaEntity matricula) {
+        BigDecimal somaNotas = BigDecimal.ZERO;
+        BigDecimal somaCoeficientes = BigDecimal.ZERO;
+
+        List<NotaEntity> notas = notaRepository.findAllByMatriculaId(matricula.getId());
+
+        for (NotaEntity nota : notas) {
+            somaNotas = somaNotas.add(nota.getNota().multiply(nota.getCoeficiente()));
+            somaCoeficientes = somaCoeficientes.add(nota.getCoeficiente());
+        }
+
+        BigDecimal mediaFinal = somaNotas.divide(somaCoeficientes, RoundingMode.HALF_UP);
+        matricula.setMediaFinal(mediaFinal);
+
+        atualizar(matricula.getId(), matricula);
     }
 
 }
