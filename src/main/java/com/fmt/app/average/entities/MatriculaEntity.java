@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "disciplina_matricula")
 @EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties("notas")
 public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
 
     @CreationTimestamp
@@ -41,7 +42,7 @@ public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
     private DisciplinaEntity disciplina;
 
     @OneToMany(mappedBy = "matricula", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("matricula")
+
     private List<NotaEntity> notas;
 
     @Override
