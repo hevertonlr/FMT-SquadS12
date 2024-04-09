@@ -69,7 +69,7 @@ public abstract class GenericController<T extends IGenericEntity<T>> implements 
     }
 
     @Override
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
         log.info("DELETE {}", requestedValue);

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("professor")
+@RequestMapping("professores")
 public class ProfessorController extends GenericController<ProfessorEntity> {
     public ProfessorController(ProfessorService service) {
         super(service);

@@ -16,7 +16,7 @@ import java.util.List;
 import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @RestController
-@RequestMapping("matricula")
+@RequestMapping("matriculas")
 public class MatriculaController extends GenericController<MatriculaEntity> {
     protected final MatriculaService service;
     public MatriculaController(MatriculaService service) {
@@ -24,13 +24,13 @@ public class MatriculaController extends GenericController<MatriculaEntity> {
         this.service = service;
     }
 
-    @GetMapping("aluno/{id}")
+    @GetMapping("alunos/{id}")
     public ResponseEntity<List<MatriculaEntity>> findByAlunoId(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
         return ResponseEntity.ok(findBySomething(id,requestedValue,"Aluno"));
     }
 
-    @GetMapping("disciplina/{id}")
+    @GetMapping("disciplinas/{id}")
     public ResponseEntity<List<MatriculaEntity>> findByDisciplinaId(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
         return ResponseEntity.ok(findBySomething(id,requestedValue,"Disciplina"));

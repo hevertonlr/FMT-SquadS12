@@ -14,7 +14,7 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 
 @Slf4j
 @RestController
-@RequestMapping("nota")
+@RequestMapping("notas")
 public class NotaController extends GenericController<NotaEntity> {
     protected final NotaService service;
     public NotaController(NotaService service) {
@@ -22,7 +22,7 @@ public class NotaController extends GenericController<NotaEntity> {
         this.service = service;
     }
 
-    @GetMapping("/matricula/{id}")
+    @GetMapping("/matriculas/{id}")
     public ResponseEntity<List<NotaEntity>> buscarPorMatriculaId(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
         log.info("GET {} -> Início", requestedValue);

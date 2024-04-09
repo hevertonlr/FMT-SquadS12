@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("aluno")
+@RequestMapping("alunos")
 public class AlunoController extends GenericController<AlunoEntity> {
     public AlunoController(AlunoService service) {
         super(service);
