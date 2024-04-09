@@ -1,5 +1,6 @@
 package com.fmt.app.average.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -25,6 +26,7 @@ public abstract class GenericEntity<T> implements Serializable, IGenericEntity<T
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @CreatedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -33,6 +35,7 @@ public abstract class GenericEntity<T> implements Serializable, IGenericEntity<T
     protected LocalDateTime createdAt;
 
 
+    @JsonIgnore
     @LastModifiedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

@@ -42,7 +42,6 @@ public class MatriculaEntity extends GenericEntity<MatriculaEntity> {
     private DisciplinaEntity disciplina;
 
     @OneToMany(mappedBy = "matricula", fetch = FetchType.EAGER)
-
     private List<NotaEntity> notas;
 
     @Override
