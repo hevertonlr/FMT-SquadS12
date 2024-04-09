@@ -47,7 +47,7 @@ public class MatriculaController extends GenericController<MatriculaEntity> {
         return entities;
     }
 
-    @GetMapping("mediafinal/{id}")
+    @GetMapping("alunos/media/{id}")
     public ResponseEntity<FinalAverageResponse> finalAverage(@PathVariable Long id){
         return ResponseEntity.ok(new FinalAverageResponse(service.getFinalAverage(id)));
     }
