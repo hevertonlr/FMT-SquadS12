@@ -1,7 +1,6 @@
 package com.fmt.app.average.controllers;
 
 import com.fmt.app.average.interfaces.*;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-public class GenericController<T extends IGenericEntity<T>> implements IGenericController<T> {
+public abstract class GenericController<T extends IGenericEntity<T>> implements IGenericController<T> {
 
     protected final IGenericService<T> service;
 
@@ -25,23 +24,23 @@ public class GenericController<T extends IGenericEntity<T>> implements IGenericC
     @GetMapping("{id}")
     public ResponseEntity<T> findById(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        log.info("GET "+requestedValue+" -> Início");
+        log.info("GET {} -> Início", requestedValue);
         T entity = service.findById(id);
-        log.info("GET "+requestedValue+" -> Encontrado", id);
-        log.info("GET "+requestedValue+" -> 200 OK", id);
-        log.debug("GET "+requestedValue+" -> Response Body:\n{}\n", id, objetoParaJson(entity));
+        log.info("GET {} -> Encontrado", requestedValue);
+        log.info("GET {} -> 200 OK", requestedValue);
+        log.debug("GET {} -> Response Body:\n{}\n", requestedValue, objetoParaJson(entity));
         return ResponseEntity.ok(entity);
     }
 
     @Override
-    @GetMapping("list")
+    @GetMapping()
     public ResponseEntity<List<T>> list() {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        log.info("GET "+requestedValue+" -> Início");
+        log.info("GET {} -> Início", requestedValue);
         List<T> entities = service.findAll();
-        log.info("GET "+requestedValue+" -> Encontrados {} registros", entities.size());
-        log.info("GET "+requestedValue+" -> 200 OK");
-        log.debug("GET "+requestedValue+" -> Response Body:\n{}\n", objetoParaJson(entities));
+        log.info("GET {} -> Encontrados {} registros", requestedValue, entities.size());
+        log.info("GET {} -> 200 OK", requestedValue);
+        log.debug("GET {} -> Response Body:\n{}\n", requestedValue, objetoParaJson(entities));
         return ResponseEntity.ok(entities);
     }
 
@@ -49,11 +48,11 @@ public class GenericController<T extends IGenericEntity<T>> implements IGenericC
     @PostMapping
     public ResponseEntity<T> create(@RequestBody T entity) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        log.info("POST "+requestedValue);
+        log.info("POST {}", requestedValue);
         entity = service.insert(entity);
-        log.info("POST "+requestedValue+" -> Cadastrado");
-        log.info("POST "+requestedValue+" -> 201 CREATED");
-        log.debug("POST "+requestedValue+" -> Response Body:\n{}\n", objetoParaJson(entity));
+        log.info("POST {} -> Cadastrado", requestedValue);
+        log.info("POST {} -> 201 CREATED", requestedValue);
+        log.debug("POST {} -> Response Body:\n{}\n", requestedValue, objetoParaJson(entity));
         return ResponseEntity.status(HttpStatus.CREATED).body(entity); // Retorna 201
     }
 
@@ -61,22 +60,22 @@ public class GenericController<T extends IGenericEntity<T>> implements IGenericC
     @PutMapping()
     public ResponseEntity<T> update(@RequestBody T entity) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        log.info("PUT "+requestedValue, entity.getId());
+        log.info("PUT {}", requestedValue);
         entity = service.update(entity);
-        log.info("PUT "+requestedValue+" -> Atualizado", entity.getId());
-        log.info("PUT "+requestedValue+" -> 200 OK", entity.getId());
-        log.debug("PUT "+requestedValue+" -> Response Body:\n{}\n", entity.getId(), objetoParaJson(entity));
+        log.info("PUT {} -> Atualizado", requestedValue);
+        log.info("PUT {} -> 200 OK", requestedValue);
+        log.debug("PUT {} -> Response Body:\n{}\n", requestedValue, objetoParaJson(entity));
         return ResponseEntity.ok(entity);
     }
 
     @Override
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         String requestedValue = (ServletUriComponentsBuilder.fromCurrentRequest()).buildAndExpand().getPath();
-        log.info("DELETE "+requestedValue, id);
+        log.info("DELETE {}", requestedValue);
         service.delete(id);
-        log.info("DELETE "+requestedValue+" -> Excluído", id);
-        log.info("DELETE "+requestedValue+" -> 204 NO CONTENT", id);
+        log.info("DELETE {} -> Excluído", requestedValue);
+        log.info("DELETE {} -> 204 NO CONTENT", requestedValue);
         return ResponseEntity.noContent().build(); // Retorna 204
     }
 }

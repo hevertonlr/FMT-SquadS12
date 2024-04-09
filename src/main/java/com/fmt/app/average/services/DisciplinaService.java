@@ -12,7 +12,6 @@ import static com.fmt.app.average.Utils.Util.objetoParaJson;
 @Slf4j
 @Service
 public class DisciplinaService extends GenericService<DisciplinaEntity> {
-    private final String entityName = "Disciplina";
     private final IGenericRepository<ProfessorEntity> professorRepository;
 
     public DisciplinaService(IGenericRepository<DisciplinaEntity> repository, IGenericRepository<ProfessorEntity> professorRepository) {
@@ -23,24 +22,25 @@ public class DisciplinaService extends GenericService<DisciplinaEntity> {
     @Override
     public DisciplinaEntity insert(DisciplinaEntity entity) {
         entity.setId(null);
-        return save(entity, "Criando");
+        return this.save(entity, "Criando");
     }
 
     @Override
     public DisciplinaEntity update(DisciplinaEntity entity) {
-        return save(entity, "Alterando");
+        return this.save(entity, "Alterando");
     }
 
 
     private DisciplinaEntity save(DisciplinaEntity entity, String action) {
         DisciplinaEntity finalEntity = entity;
+        String entityName = "Disciplina";
         String initLogMessage = action + ' ' + entityName;
         if(action.equals("Alterando")) {
             finalEntity = findById(entity.getId());
             finalEntity.update(entity);
-            log.info(initLogMessage + " com id ({}) -> Salvar: \n{}\n", finalEntity.getId(), objetoParaJson(finalEntity));
+            log.info("{} com id ({}) -> Salvar: \n{}\n", initLogMessage, finalEntity.getId(), objetoParaJson(finalEntity));
         }else
-            log.info(initLogMessage + " -> Salvar: \n{}\n", objetoParaJson(finalEntity));
+            log.info("{} -> Salvar: \n{}\n", initLogMessage, objetoParaJson(finalEntity));
 
         Long idProfessor = entity.getProfessor().getId();
         professorRepository.findById(idProfessor).ifPresentOrElse(
@@ -50,8 +50,8 @@ public class DisciplinaService extends GenericService<DisciplinaEntity> {
                 });
 
         finalEntity = repository.save(finalEntity);
-        log.info(initLogMessage + " -> Salvo com sucesso");
-        log.debug(initLogMessage + " -> Registro Salvo: \n{}\n", objetoParaJson(finalEntity));
+        log.info("{} -> Salvo com sucesso", initLogMessage);
+        log.debug("{} -> Registro Salvo: \n{}\n", initLogMessage, objetoParaJson(finalEntity));
         return finalEntity;
     }
 }

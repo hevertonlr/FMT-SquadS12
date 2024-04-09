@@ -1,5 +1,6 @@
 package com.fmt.app.average.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "notas")
 @EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties("matricula")
 public class NotaEntity extends GenericEntity<NotaEntity>{
     @ColumnDefault(value = "0.00")
     @Column(precision = 5,scale = 2,nullable = false)
