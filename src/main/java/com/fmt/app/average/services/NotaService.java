@@ -8,6 +8,8 @@ import com.fmt.app.average.repositories.NotaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static com.fmt.app.average.Utils.Util.objetoParaJson;
@@ -40,6 +42,12 @@ public class NotaService extends GenericService<NotaEntity> {
         if(entity.getCoeficiente().doubleValue() < 0 || entity.getCoeficiente().doubleValue() > 1){
             throw new InvalidException("Coeficiente invalida, Coeficiente atribuída " + entity.getCoeficiente().doubleValue());
         }
+
+        double tempCoeficiente = getSumCoeficiente(entity.getMatricula().getId()).add(entity.getCoeficiente()).doubleValue();
+        if(tempCoeficiente > 1 ){
+            throw new InvalidException("Coeficiente invalida, Soma dos coeficientes não pode ser superior a 1, resultado " + tempCoeficiente);
+        }
+
         MatriculaEntity matriculaEntity = matriculaService.findById(entity.getMatricula().getId());
 
         entity.setMatricula(matriculaEntity);
@@ -47,6 +55,23 @@ public class NotaService extends GenericService<NotaEntity> {
         NotaEntity inserted = saveGeneric(entity,"Criando");
         matriculaService.updateFinalAverage(inserted.getMatricula());
         return inserted;
+    }
+
+    public BigDecimal getSumCoeficiente (Long id){
+        List<NotaEntity> notas = repository.findAllByMatriculaId(id);
+
+        if(notas.isEmpty()){
+            return BigDecimal.ZERO;
+        }
+        BigDecimal somaCoeficientes = BigDecimal.ZERO;
+
+        for (NotaEntity nota : notas) {
+            log.debug("somaCoeficientes init: {}",somaCoeficientes);
+            somaCoeficientes = somaCoeficientes.add(nota.getCoeficiente());
+            log.debug("somaCoeficientes after: {}",somaCoeficientes);
+        }
+
+        return somaCoeficientes;
     }
 
     @Override

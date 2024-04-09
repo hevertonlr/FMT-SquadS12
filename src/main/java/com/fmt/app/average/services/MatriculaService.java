@@ -71,22 +71,27 @@ public class MatriculaService extends GenericService<MatriculaEntity> {
 
     public void updateFinalAverage(MatriculaEntity matricula) {
         List<NotaEntity> notas = notaRepository.findAllByMatriculaId(matricula.getId());
-        if(notas.isEmpty()) return;
+
+        if(notas.isEmpty()) {
+            matricula.setMediaFinal(BigDecimal.ZERO);
+            update(matricula);
+            return;
+        }
 
         BigDecimal somaNotas = BigDecimal.ZERO;
-        BigDecimal somaCoeficientes = BigDecimal.ZERO;
+        //BigDecimal somaCoeficientes = BigDecimal.ZERO;
 
         for (NotaEntity nota : notas) {
             log.debug("somaNota init: {}",somaNotas);
             somaNotas = somaNotas.add(nota.getNota().multiply(nota.getCoeficiente()));
             log.debug("somaNota after: {}",somaNotas);
-            log.debug("somaCoeficientes init: {}",somaCoeficientes);
-            somaCoeficientes = somaCoeficientes.add(nota.getCoeficiente());
-            log.debug("somaCoeficientes after: {}",somaCoeficientes);
+            //log.debug("somaCoeficientes init: {}",somaCoeficientes);
+            //somaCoeficientes = somaCoeficientes.add(nota.getCoeficiente());
+            //log.debug("somaCoeficientes after: {}",somaCoeficientes);
         }
 
-        BigDecimal mediaFinal = somaNotas.divide(somaCoeficientes, RoundingMode.HALF_UP);
-        matricula.setMediaFinal(mediaFinal);
+        //BigDecimal mediaFinal = somaNotas.divide(somaCoeficientes, RoundingMode.HALF_UP);
+        matricula.setMediaFinal(somaNotas);
 
         update(matricula);
     }
