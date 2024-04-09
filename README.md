@@ -1,5 +1,6 @@
 # Documentação do Mini Projeto 02 - Sistema de Gerenciamento de Notas
 
+
 Esta é a documentação do mini projeto - Sistema de Gerenciamento de Notas, desenvolvido como exercício prático, com intuito de aplicar os conhecimentos adquiridos até a décima segunda semana do Módulo Back-End do Curso FullStack oferecido pelo Lab365 e SESI/SENAI.
 Aqui você encontrará informações sobre a sua funcionalidade, como os endpoints disponíveis, seus métodos, parâmetros necessários, e exemplos de resposta.
 
@@ -11,6 +12,20 @@ A URL base para todas as solicitações é `http://localhost:8080`.
 
 ### Professores
 
+#### `POST /professores`
+
+Este endpoint cria um novo professor.
+
+##### Corpo da Requisição
+
+O corpo da requisição deve conter um objeto JSON com as informações a serem atualizadas, seguindo o seguinte formato:
+
+```json
+{
+  "nome": "Novo Nome do Professor"
+}
+```
+
 #### `GET /professores/{id}`
 
 Este endpoint retorna informações de um professor específico.
@@ -19,13 +34,9 @@ Este endpoint retorna informações de um professor específico.
 
 - `id` (integer, obrigatório): O ID do professor.
 
-#### `PUT /professores/{id}`
+#### `PUT /professores`
 
 Este endpoint atualiza as informações de um professor específico.
-
-##### Parâmetros da URL
-
-- `id` (integer, obrigatório): O ID do professor.
 
 ##### Corpo da Requisição
 
@@ -33,6 +44,7 @@ O corpo da requisição deve conter um objeto JSON com as informações a serem 
 
 ```json
 {
+  "id": 123,
   "nome": "Novo Nome do Professor"
 }
 ```
@@ -51,6 +63,23 @@ Este endpoint retorna uma lista de todos os professores.
 
 ### Disciplinas
 
+#### `POST /disciplinas`
+
+Este cria uma nova disciplina.
+
+##### Corpo da Requisição
+
+O corpo da requisição deve conter um objeto JSON com as informações a serem atualizadas, seguindo o seguinte formato:
+
+```json
+{
+  "nome": "Novo Nome da Disciplina",
+  "professor": {
+			"id":123
+	}
+}
+```
+
 #### `GET /disciplinas/{id}`
 
 Este endpoint retorna informações de uma disciplina específica.
@@ -59,13 +88,9 @@ Este endpoint retorna informações de uma disciplina específica.
 
 - `id` (integer, obrigatório): O ID da disciplina.
 
-#### `PUT /disciplinas/{id}`
+#### `PUT /disciplinas`
 
 Este endpoint atualiza as informações de uma disciplina específica.
-
-##### Parâmetros da URL
-
-- `id` (integer, obrigatório): O ID da disciplina.
 
 ##### Corpo da Requisição
 
@@ -73,6 +98,7 @@ O corpo da requisição deve conter um objeto JSON com as informações a serem 
 
 ```json
 {
+  "id": 123,
   "nome": "Novo Nome da Disciplina",
   "professor": {
 			"id":123
@@ -94,6 +120,21 @@ Este endpoint retorna uma lista de todas as disciplinas.
 
 ### Alunos
 
+#### `POST /alunos`
+
+Este um novo aluno.
+
+##### Corpo da Requisição
+
+O corpo da requisição deve conter um objeto JSON com as informações a serem atualizadas, seguindo o seguinte formato:
+
+```json
+{
+  "nome": "Novo Nome do Aluno",
+  "nascimento": "1990-01-01"
+}
+```
+
 #### `GET /alunos/{id}`
 
 Este endpoint retorna informações de um aluno específico.
@@ -102,13 +143,9 @@ Este endpoint retorna informações de um aluno específico.
 
 - `id` (integer, obrigatório): O ID do aluno.
 
-#### `PUT /alunos/{id}`
+#### `PUT /alunos`
 
 Este endpoint atualiza as informações de um aluno específico.
-
-##### Parâmetros da URL
-
-- `id` (integer, obrigatório): O ID do aluno.
 
 ##### Corpo da Requisição
 
@@ -116,6 +153,7 @@ O corpo da requisição deve conter um objeto JSON com as informações a serem 
 
 ```json
 {
+  "id": 123,
   "nome": "Novo Nome do Aluno",
   "nascimento": "1990-01-01"
 }
